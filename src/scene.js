@@ -31,7 +31,6 @@ export const createScene = function () {
     engine,
     function (scene) {
       scene.executeWhenReady(function () {
-        console.log(scene.meshes);
         scene.collisionsEnabled = true;
 
         // scene.enablePhysics(
