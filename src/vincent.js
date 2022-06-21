@@ -58,7 +58,7 @@ export const createWalkingVincent = (scene, canvas) => {
     function (newMeshes, particleSystems, skeletons, animationGroups) {
       const hero = newMeshes[0];
       console.log("Vincent:", hero);
-      var mat = new BABYLON.StandardMaterial(null, scene);
+      const mat = new BABYLON.StandardMaterial(null, scene);
       mat.diffuseTexture = new BABYLON.Texture(
         "src/unitySource/Vincent_texture_image.jpg",
         scene

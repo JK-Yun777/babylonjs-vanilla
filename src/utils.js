@@ -12,7 +12,7 @@ export const colors = {
 };
 
 export const createMat = (scene, color) => {
-  var mat = new BABYLON.StandardMaterial("", scene);
+  const mat = new BABYLON.StandardMaterial("", scene);
   mat.diffuseColor = color;
   mat.specularColor = BABYLON.Color3.FromHexString("#555555");
   mat.specularPower = 1;
@@ -23,7 +23,7 @@ export const createMat = (scene, color) => {
 
 export const makePhysicsObject = (newMeshes, scene, scaling) => {
   // Create physics root and position it to be the center of mass for the imported mesh
-  var physicsRoot = new BABYLON.Mesh("physicsRoot", scene);
+  const physicsRoot = new BABYLON.Mesh("physicsRoot", scene);
   physicsRoot.position.y -= 0.9;
 
   // For all children labeled box (representing colliders), make them invisible and add them as a child of the root object

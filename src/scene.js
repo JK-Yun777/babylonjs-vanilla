@@ -35,7 +35,7 @@ export const createScene = async function () {
 
   // camera.attachControl(canvas, true);
 
-  var camera = new BABYLON.FreeCamera(
+  const camera = new BABYLON.FreeCamera(
     "camera1",
     new BABYLON.Vector3(-50, 50, -50),
     scene
@@ -56,7 +56,7 @@ export const createScene = async function () {
     engine,
     function (scene) {
       scene.executeWhenReady(function (newMeshes) {
-        var camera = new BABYLON.ArcRotateCamera(
+        const camera = new BABYLON.ArcRotateCamera(
           "Camera",
           BABYLON.Tools.ToRadians(90),
           BABYLON.Tools.ToRadians(80),
