@@ -25,13 +25,13 @@ export const createFollowCamera = function (scene, canvas, target) {
   return camera;
 };
 
-export const createFreeCamera = (scene) => {
+export const createFreeCamera = (scene, canvas) => {
   const camera = new BABYLON.FreeCamera(
     "freeCamera",
-    new BABYLON.Vector3(0, 10, 0),
+    new BABYLON.Vector3(0, 2, 0),
     scene
   );
-  camera.attachControl();
+  camera.attachControl(canvas, true);
 
   camera.applyGravity = true;
   camera.checkCollisions = true;

@@ -35,7 +35,7 @@ export const createSambaWoman = (scene, canvas) => {
   );
 
   // Load hero character
-  const aa = BABYLON.SceneLoader.ImportMesh(
+  BABYLON.SceneLoader.ImportMesh(
     "",
     "src/unitySource/",
     "HVGirl.glb",
@@ -43,13 +43,50 @@ export const createSambaWoman = (scene, canvas) => {
     function (newMeshes, particleSystems, skeletons, animationGroups) {
       const hero = newMeshes[0];
 
-      //Scale the model down
+      //Add collider
+
+      const authoredStartPosition = new BABYLON.Vector3(-2, 0, 20);
+      const authoredCenterMassOffset = new BABYLON.Vector3(0, 0, 0);
+
+      hero.position = authoredCenterMassOffset;
+
+      const bodyVisible = false;
+      const box = BABYLON.MeshBuilder.CreateBox(
+        "box1",
+        { width: 2, height: 2, depth: 1 },
+        scene
+      );
+
+      box.position.y = -1;
+
+      box.isVisible = bodyVisible;
+
+      hero.addChild(box);
+
+      box.physicsImpostor = new BABYLON.PhysicsImpostor(
+        box,
+        BABYLON.PhysicsImpostor.BoxImpostor,
+        { mass: 0 },
+        scene
+      );
+
+      hero.physicsImpostor = new BABYLON.PhysicsImpostor(
+        hero,
+        BABYLON.PhysicsImpostor.NoImpostor,
+        { mass: 3 },
+        scene
+      );
+
+      hero.rotation.x = 0.2;
+      hero.rotation.z = 0.2;
+      hero.rotation.y = 1;
+
+      hero.position = authoredStartPosition;
+
       hero.scaling.scaleInPlace(0.1);
 
-      //Lock camera on the character
       camera1.target = hero;
 
-      //Hero character variables
       const heroSpeed = 0.08;
       const heroSpeedBackwards = 0.01;
       const heroRotationSpeed = 0.1;

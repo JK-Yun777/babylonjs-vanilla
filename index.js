@@ -1,8 +1,8 @@
 import { createScene } from "./src/scene.js";
 import { engine } from "./src/initSetting.js";
 
-window.addEventListener("DOMContentLoaded", function () {
-  const scene = createScene();
+window.addEventListener("DOMContentLoaded", async function () {
+  const scene = await createScene();
   // createPointerLock(scene);
 
   engine.runRenderLoop(function () {

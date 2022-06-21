@@ -8,61 +8,91 @@ import { creatStarrynight } from "./starrynight.js";
 import { createBoxPointer, createSpherePointer } from "./fpsPointer.js";
 import { createVincent, createWalkingVincent } from "./vincent.js";
 import { createSambaWoman } from "./sambaWoman.js";
+import { makePhysicsObject } from "./utils.js";
 
-export const createScene = function () {
-  const sun = new BABYLON.PointLight(
-    "Omni0",
-    new BABYLON.Vector3(60, 100, 10),
+export const createScene = async function () {
+  // const sun = new BABYLON.PointLight(
+  //   "Omni0",
+  //   new BABYLON.Vector3(50, 50, 10),
+  //   scene
+  // );
+
+  const light = new BABYLON.HemisphericLight(
+    "light1",
+    new BABYLON.Vector3(0, 1, 0),
+    scene
+  );
+  light.intensity = 0.7;
+
+  // const camera = new BABYLON.ArcRotateCamera(
+  //   "Camera",
+  //   (3 * Math.PI) / 2,
+  //   Math.PI / 3,
+  //   15,
+  //   BABYLON.Vector3.Zero(),
+  //   scene
+  // );
+
+  // camera.attachControl(canvas, true);
+
+  var camera = new BABYLON.FreeCamera(
+    "camera1",
+    new BABYLON.Vector3(-50, 50, -50),
     scene
   );
 
-  // const framesPerSecond = 60;
-  // const gravity = -9.81;
-  // scene.gravity = new BABYLON.Vector3(0, gravity / framesPerSecond, 0);
-  // scene.collisionsEnabled = true;
-  // scene.enablePhysics(
-  //   new BABYLON.Vector3(0, -10, 0),
-  //   new BABYLON.AmmoJSPlugin()
-  // );
+  camera.setTarget(new BABYLON.Vector3(55, 15, 55));
+
+  camera.attachControl(canvas, true);
+
+  await Ammo();
+  const ammo = new BABYLON.AmmoJSPlugin(true);
+  ammo.setMaxSteps(10);
+  ammo.setFixedTimeStep(1 / 240);
 
   BABYLON.SceneLoader.Load(
     "src/unitySource/",
     "scene_withoutCam.babylon",
     engine,
     function (scene) {
-      scene.executeWhenReady(function () {
-        scene.collisionsEnabled = true;
+      scene.executeWhenReady(function (newMeshes) {
+        var camera = new BABYLON.ArcRotateCamera(
+          "Camera",
+          BABYLON.Tools.ToRadians(90),
+          BABYLON.Tools.ToRadians(80),
+          40,
+          new BABYLON.Vector3(0, -2, 0),
+          scene
+        );
 
-        // scene.enablePhysics(
-        //   new BABYLON.Vector3(0, -10, 0),
-        //   new BABYLON.AmmoJSPlugin()
-        // );
+        camera.attachControl(canvas, true);
 
-        // scene.meshes.map((mesh) => {
-        //   mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
-        //     mesh,
-        //     BABYLON.PhysicsImpostor.BoxImpostor,
-        //     { mass: 0.1 },
-        //     scene
-        //   );
-        // });
+        scene.enablePhysics(new BABYLON.Vector3(0, -10, 0), ammo);
+        // const sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
+        // sphere.position = new BABYLON.Vector3(-2, 10, 24);
 
-        // scene.meshes.physicsImpostor = new BABYLON.PhysicsImpostor(
-        //   scene.meshes,
-        //   BABYLON.PhysicsImpostor.BoxImpostor,
-        //   { mass: 1, restitution: 1, friction: 1 }
-        // );
-        // newScene.activeCamera.attachControl(canvas);
-        // const ball = createSpherePointer(scene);
-        // const camera = createFollowCamera(scene, canvas, ball);
+        const city = newMeshes.meshes;
 
-        // console.log("ball", ball.move);
-        // controller(ball);
-
-        // createVincent(scene);
-        // createVincentAnimation(scene);
         createSambaWoman(scene, canvas);
-        // createWalkingVincent(scene, canvas);
+
+        city.forEach(function (m) {
+          if (m.parent) {
+            m.physicsImpostor = new BABYLON.PhysicsImpostor(
+              m,
+              BABYLON.PhysicsImpostor.MeshImpostor,
+              { mass: 0, restitution: 0.9, ignoreParent: true },
+              scene
+            );
+            console.log(m.physicsImpostor.object.name);
+          }
+        });
+
+        // sphere.physicsImpostor = new BABYLON.PhysicsImpostor(
+        //   sphere,
+        //   BABYLON.PhysicsImpostor.SphereImpostor,
+        //   { mass: 5, restitution: 0.9 },
+        //   scene
+        // );
 
         engine.runRenderLoop(function () {
           scene.render();
@@ -75,9 +105,6 @@ export const createScene = function () {
       }
     }
   );
-
-  //const camera =
-  createFreeCamera(scene);
 
   return scene;
 };
