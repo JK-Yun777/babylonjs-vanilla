@@ -9,6 +9,8 @@ import { createBoxPointer, createSpherePointer } from "./fpsPointer.js";
 import { createVincent, createWalkingVincent } from "./vincent.js";
 import { createSambaWoman } from "./sambaWoman.js";
 import { makePhysicsObject } from "./utils.js";
+import { createPolice } from "./police.js";
+import { createAj } from "./aj.js";
 
 export const createScene = async function () {
   // const sun = new BABYLON.PointLight(
@@ -52,29 +54,25 @@ export const createScene = async function () {
 
   BABYLON.SceneLoader.Load(
     "src/unitySource/",
-    "scene_withoutCam.babylon",
+    "sceneWithoutCam.babylon",
     engine,
     function (scene) {
       scene.executeWhenReady(function (newMeshes) {
-        const camera = new BABYLON.ArcRotateCamera(
-          "Camera",
-          BABYLON.Tools.ToRadians(90),
-          BABYLON.Tools.ToRadians(80),
-          40,
-          new BABYLON.Vector3(0, -2, 0),
-          scene
-        );
-
-        camera.attachControl(canvas, true);
-
         scene.enablePhysics(new BABYLON.Vector3(0, -10, 0), ammo);
-        // const sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
-        // sphere.position = new BABYLON.Vector3(-2, 10, 24);
+
+        // const camera = new BABYLON.ArcRotateCamera(
+        //   "Camera",
+        //   BABYLON.Tools.ToRadians(90),
+        //   BABYLON.Tools.ToRadians(80),
+        //   40,
+        //   new BABYLON.Vector3(0, -2, 0),
+        //   scene
+        // );
+        // camera.attachControl(canvas, true);
 
         const city = newMeshes.meshes;
 
-        createSambaWoman(scene, canvas);
-
+        // Collision cannot be added while there are children (should be added ignoreParent: true).  Collision can only be added on a single object
         city.forEach(function (m) {
           if (m.parent) {
             m.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -86,6 +84,13 @@ export const createScene = async function () {
             console.log(m.physicsImpostor.object.name);
           }
         });
+
+        createSambaWoman(scene, canvas);
+        // createPolice(scene, canvas);
+        // createAj(scene, canvas);
+
+        // const sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 1, scene);
+        // sphere.position = new BABYLON.Vector3(-2, 10, 24);
 
         // sphere.physicsImpostor = new BABYLON.PhysicsImpostor(
         //   sphere,

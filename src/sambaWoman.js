@@ -1,19 +1,20 @@
 export const createSambaWoman = (scene, canvas) => {
   const camera1 = new BABYLON.ArcRotateCamera(
     "camera1",
-    Math.PI / 2,
-    Math.PI / 4,
-    10,
+    Math.PI / 2.2,
+    Math.PI / 2.5,
+    40,
     new BABYLON.Vector3(0, -5, 0),
     scene
   );
   scene.activeCamera = camera1;
   scene.activeCamera.attachControl(canvas, true);
   camera1.lowerRadiusLimit = 2;
-  camera1.upperRadiusLimit = 10;
+  camera1.upperRadiusLimit = 100;
   camera1.wheelDeltaPercentage = 0.09;
   camera1.applyGravity = true;
   camera1.checkCollisions = true;
+  camera1.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 
   const inputMap = {};
   scene.actionManager = new BABYLON.ActionManager(scene);
@@ -44,7 +45,6 @@ export const createSambaWoman = (scene, canvas) => {
       const hero = newMeshes[0];
 
       //Add collider
-
       const authoredStartPosition = new BABYLON.Vector3(-2, 0, 20);
       const authoredCenterMassOffset = new BABYLON.Vector3(0, 0, 0);
 
@@ -58,9 +58,7 @@ export const createSambaWoman = (scene, canvas) => {
       );
 
       box.position.y = -1;
-
       box.isVisible = bodyVisible;
-
       hero.addChild(box);
 
       box.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -77,16 +75,12 @@ export const createSambaWoman = (scene, canvas) => {
         scene
       );
 
-      hero.rotation.x = 0.2;
-      hero.rotation.z = 0.2;
-      hero.rotation.y = 1;
-
       hero.position = authoredStartPosition;
-
       hero.scaling.scaleInPlace(0.1);
 
       camera1.target = hero;
 
+      // Add animations
       const heroSpeed = 0.08;
       const heroSpeedBackwards = 0.01;
       const heroRotationSpeed = 0.1;
