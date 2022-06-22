@@ -19,12 +19,12 @@ export const createScene = async function () {
   //   scene
   // );
 
-  const light = new BABYLON.HemisphericLight(
-    "light1",
-    new BABYLON.Vector3(0, 1, 0),
-    scene
-  );
-  light.intensity = 0.7;
+  // const light = new BABYLON.HemisphericLight(
+  //   "light1",
+  //   new BABYLON.Vector3(0, 1, 0),
+  //   scene
+  // );
+  // light.intensity = 0.6;
 
   // const camera = new BABYLON.ArcRotateCamera(
   //   "Camera",

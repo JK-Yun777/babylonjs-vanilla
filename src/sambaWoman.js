@@ -1,4 +1,11 @@
 export const createSambaWoman = (scene, canvas) => {
+  const light = new BABYLON.HemisphericLight(
+    "light1",
+    new BABYLON.Vector3(0, 1, 0),
+    scene
+  );
+  light.intensity = 0.2;
+
   const camera1 = new BABYLON.ArcRotateCamera(
     "camera1",
     Math.PI / 2.2,
@@ -45,7 +52,7 @@ export const createSambaWoman = (scene, canvas) => {
       const hero = newMeshes[0];
 
       //Add collider
-      const authoredStartPosition = new BABYLON.Vector3(-2, 0, 20);
+      const authoredStartPosition = new BABYLON.Vector3(-5, 0, 10);
       const authoredCenterMassOffset = new BABYLON.Vector3(0, 0, 0);
 
       hero.position = authoredCenterMassOffset;
